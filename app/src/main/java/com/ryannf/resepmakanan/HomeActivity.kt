@@ -1,11 +1,13 @@
 package com.ryannf.resepmakanan
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.Button
+import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bellodev.recyclerviewapp.MyAdapter
@@ -13,6 +15,8 @@ import com.ryannf.resepmakanan.helper.Constant
 import com.ryannf.resepmakanan.helper.PreferencesHelper
 
 class HomeActivity : AppCompatActivity() {
+
+
 
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: MyAdapter
@@ -24,17 +28,25 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+
         sharedpref = PreferencesHelper(this)
 
         val textUsername = findViewById(R.id.textUsername) as TextView
         val buttonLogout = findViewById(R.id.buttonLogout) as Button
+        val toListResep = findViewById(R.id.buttnToListResep) as Button
 
         textUsername.text = sharedpref.getString(Constant.PREF_USERNAME)
+
         buttonLogout.setOnClickListener{
             sharedpref.clear()
             showMessage("Keluar")
             moveIntent()
+        }
 
+        toListResep.setOnClickListener{
+            sharedpref.clear()
+            showMessage("List Resep")
+            moveToListResep()
         }
 
         init()
@@ -42,6 +54,10 @@ class HomeActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+    }
+
+    private fun moveToListResep(){
+        startActivity(Intent(this, ListResepActivity::class.java))
     }
 
     private fun moveIntent(){
